@@ -5,7 +5,7 @@
    Tutorial 11
    Review Assignment
 
-   Author: 
+   Author: Elizanna Hahn
    Date:   
 
    Global Variables
@@ -46,31 +46,25 @@
       the numbers, blocks, and rating parameters.
 	
 */
-
-// Declares the global allCells variable, used to store an array of the puzzle cells
 var allCells
 
-// Runs the startUp() function when the page is loaded by the browser
 function startUp() {
-document.getElementById("puzzleTitle").innerHTML = "Puzzle 1";
+   document.getElementById("puzzleTitle").innerHTML = "Puzzle 1";
 }
 
 function drawHitori() {
-   document.getElementById("puzzle").innerHTML =
-   drawHitori(hitori1Numbers, hitori1Blocks, hitori1Rating);
+   document.getElementById("puzzle").innerHTml = drawHitori(hitori1Numbers, hitori1Rating, hitori1Rating);
 }
 
-// Adds an event handler to each button when the button is clicked
-var puzzleButtons = document.getElementsByClassName("puzzles");
+var puzzleButtons  = document.getElementsByClassName("puzzles");
 for (var i = 0; i < puzzleButtons.length; i++) {
-   puzzleButtons[i].onclick = switchPuzzle;
+      puzzleButtons[i].onclick = switchPuzzle;
 }
 
-// Calls the setupPuzzle() function that defines the initial appearance of the first puzzle
 setupPuzzle();
 
 document.getElementById("Check").addEventListener ("click",
-   function findErrors() {
+function findErrors() {
    for (var i = 0; i < allCells.length; i++) {
       allCells[i].style.backgroundColor = "";
    }
@@ -79,32 +73,32 @@ document.getElementById("Check").addEventListener ("click",
 );
 
 document.getElementById("Show").addEventListener ("click",
-   function showSolution() {
-      for (var i = 0; i < allCells.length; i++) {
-         allCells[i].style.backgroundColor = "";
-         }
-      }
-   );
+function showSolution() {
+   for (var i = 0; i < allCells.length; i++) {
+      allCells[i].style.backgroundColor = "";
+   }
+}
 
-   function switchPuzzle(e) {
+);
+
+function switchPuzzle(e) {
    if (confirm("You will lose all of your work on the puzzle! Continue?")) {
    var puzzleID = e.target.id;
 
    var puzzleTitle = e.target.value;
    document.getElementById("puzzleTitle").innerHTML = puzzleTitle;
 
-      switch (puzzleID) {
-   case "puzzle1":
-      document.getElementById("puzzle").innerHTML =
-         drawHitori(hitori1Numbers, hitori1Blocks, hitori1Rating);
-      break;
-   case "puzzle2":
-      document.getElementById("puzzle").innerHTML =
-         drawHitori(hitori2Numbers, hitori2Blocks, hitori2Rating);
+   switch (puzzleID) {
+      case "puzzle1":
+         document.getElementById("puzzle").innerHTML = 
+         drawHitori(hitori1Numbers, hitori1Rating, hitori1Rating);
+         break;
+      case "puzzle2": document.getElementById("puzzle").innerHTML = 
+      drawHitori(hitori1Numbers, hitori1Rating, hitori1Rating);
       break;
    case "puzzle3":
-      document.getElementById("puzzle").innerHTML =
-         drawHitori(hitori3Numbers, hitori3Blocks, hitori3Rating);
+      document.getElementById("puzzle").innerHTML = 
+      drawHitori(hitori1Numbers, hitori1Rating, hitori1Rating);
       break;
    }
 
@@ -116,12 +110,24 @@ function setupPuzzle() {
    allCells = document.querySelectorAll("table#hitoriGrid td");
    for (var i = 0; i < allCells.length; i++) {
       allCells[i].style.backgroundColor = "rgb(white)";
-      allCells[i].onmousedown = setbackground;
-   }
 
+      allCells[i].onmousedown = setbackground;
+}
 }
 
-// Adds an event handler that runs findErrors() when function is click
+function setbackground(e) {
+var cursorType;
+
+   if (e.shiftKey) {
+      cellBackground = "rgb(white)";
+      cellFont = "rgb(black)";
+      cellBorderRadius = "0";
+      cursorType = "url(jpf_eraser.png), alias";
+}
+}
+
+
+
 
 
 
