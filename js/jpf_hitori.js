@@ -48,7 +48,7 @@
 */
 
 // Declares the global allCells variable, used to store an array of the puzzle cells
-var allCells;
+let allCells;
 
 window.onload = startUp;
 
@@ -58,8 +58,8 @@ document.getElementById("puzzleTitle").innerHTML = "Puzzle 1";
    document.getElementById("puzzle").innerHTML = drawHitori(hitori1Numbers, hitori1Blocks, hitori1Rating);
 
 // Adds an event handler to each button when the button is clicked
-var puzzleButtons = document.getElementsByClassName("puzzles");
-for (var puzzleButton of puzzleButtons) {
+let puzzleButtons = document.getElementsByClassName("puzzles");
+for (let puzzleButton of puzzleButtons) {
    puzzleButton.addEventListener('click', switchPuzzle);
 }
 
@@ -83,6 +83,7 @@ document.getElementById("solve").addEventListener('click', showSolution);
       break;
    case "puzzle2":
       document.getElementById("puzzle").innerHTML = drawHitori(hitori2Numbers, hitori2Blocks, hitori2Rating);
+      setupPuzzle();
       break;
    case "puzzle3":
       document.getElementById("puzzle").innerHTML = drawHitori(hitori3Numbers, hitori3Blocks, hitori3Rating);
@@ -94,23 +95,63 @@ document.getElementById("solve").addEventListener('click', showSolution);
 
 function setupPuzzle() {
    allCells = document.querySelectorAll("td");
-   for (var i = 0; i < allCells.length; i++) {
-      allCells[i].style.backgroundColor = "rgb(white)";
-      allCells[i].onmousedown = setbackground;
-   }
 
-   function setbackground(e) {
-      var cursorType;
+   // Set puzzle tiles to default
+   allCells.forEach((cell) => {
+      cell.style.backgroundColor = 'white';
+      cell.style.color = 'black';
+      cell.style.borderRadius = '0';
 
-      if (e.shiftKey) {
-         cellBackground = "rgb(white)";
+      // Detects if user clicks tile while pressing keys
+      cell.addEventListener('mousedown', (e) => {
+         if (e.shiftKey) {
+            cell.style.backgroundColor = 'white';
+            cell.style.color = 'black';
+            cell.style.borderRadius = '0';
+         } else if (e.altKey) {
+            cell.style.backgroundColor = 'black';
+            cell.style.color = 'white';
+            cell.style.borderRadius = '0';
+         } else {
+            cell.style.backgroundColor = 'rgb(101, 101, 101)';
+            cell.style.color = 'white';
+            cell.style.borderRadius = '50%';
+         }
 
-      }
-   }
+         e.preventDefault();
+      })
 
+      // Change cursor based off key
+
+      cell.addEventListener('mouseover', (e) => {
+         if (e.shiftKey) {
+            cell.style.cursor = 'url(../img/jpf_eraser.png), alias';
+         } else if (e.altKey) {
+            cell.style.cursor = 'url(../img/jpf_block.png), cell';
+         } else {
+            cell.style.cursor = 'url(../img/jpf_circle.png), pointer';
+         }
+      })
+
+      // Check if puzzle corrent
+      cell.addEventListener('mouseup', checkSolution);
+   })
 }
 
-// Adds an event handler that runs findErrors() when function is click
+function findErrors() {
+   allCells.forEach((cell) => {
+      if ((cell.className === 'blocks' && cell.style.backgroundColor === 'rgb(101, 101, 101)') || (cell.className === 'circles' && cell.style.backgroundColor === 'black')) {
+         cell.style.color = 'red';
+      }
+   })
+
+   // Change font color after 1 second
+   setTimeout(() => {
+      allCells.forEach((cell) => {
+         if (cell.style.color === 'red') cell.style.color = 'white';
+      })
+   }, 1000)
+}
 
 
 
@@ -120,19 +161,19 @@ function setupPuzzle() {
 
 function checkSolution() {
    /* Set the initial solved state of the puzzle to true */
-   var solved = true;
+   let solved = true;
 
    /* Loop through the puzzle cells, exiting when an incorrect
       cell is found, setting the solved variable to false */
 
-   for (var i = 0; i < allCells.length; i++) {
-      var cellColor = allCells[i].style.backgroundColor;
-      var cellClass = allCells[i].className;
+   for (let i = 0; i < allCells.length; i++) {
+      const cellColor = allCells[i].style.backgroundColor;
+      const cellClass = allCells[i].className;
 
       /* A cell is incorrect if it is in the block class and is not black
          or in the circle class and is not white */
-      if ( (cellClass == "blocks" && cellColor !== "black") || 
-           (cellClass == "circles" && cellColor !== "rgb(101, 101, 101)")) {
+      if ((cellClass === "blocks" && cellColor !== "rgb(0, 0, 0)") || 
+           (cellClass === "circles" && cellColor !== "rgb(101, 101, 101)")) {
          solved = false;
          break;
       }
@@ -142,18 +183,18 @@ function checkSolution() {
    if (solved) alert("Congratulations! You solved the puzzle!");
 }
 
-function showSolution () {
-   for (var i = 0; i < allCells.length; i++) {
+function showSolution() {
+   for (let i = 0; i < allCells.length; i++) {
       allCells[i].style.color = "";
       allCells[i].style.backgroundColor = "";
       allCells[i].style.borderRadius = "";
-   };   
+   }
 }
 
 function drawHitori(numbers, blocks, rating) {
 
    /* Initial HTML String for the Hitori Puzzle */
-   var htmlString = "";
+   let htmlString;
 
    /* numbers is a multidimensional array containing the
       Hitori numbers; blocks is a corresponding 
@@ -167,21 +208,21 @@ function drawHitori(numbers, blocks, rating) {
       blocks. Non-blocking cells have the class name, circles
   */
 
-   var totalRows = numbers.length;
-   var totalCols = numbers[0].length;
+   const totalRows = numbers.length;
+   const totalCols = numbers[0].length;
    htmlString = "<table id='hitoriGrid'>";
    htmlString += "<caption>" + rating + "</caption>";
    
 
-   for (var i = 0; i < totalRows; i++) {
+   for (let i = 0; i < totalRows; i++) {
       htmlString += "<tr>";
 
-      for (var j = 0; j < totalCols; j++) {
-         if (blocks[i][j] == "#") htmlString += "<td  class='blocks'>"
+      for (let j = 0; j < totalCols; j++) {
+         if (blocks[i][j] === "#") htmlString += "<td  class='blocks'>"
          else htmlString += "<td class='circles'>";
 
          htmlString += numbers[i][j];
-         htmlString +="</td>";
+         htmlString += "</td>";
       }
 
       htmlString += "</tr>";
