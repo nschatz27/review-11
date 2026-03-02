@@ -81,7 +81,7 @@ document.getElementById("solve").addEventListener('click', showSolution);
       document.getElementById("puzzle").innerHTML = drawHitori(hitori1Numbers, hitori1Blocks, hitori1Rating);
       setupPuzzle();
       break;
-   case "puzzle2":
+     case "puzzle2":
       document.getElementById("puzzle").innerHTML = drawHitori(hitori2Numbers, hitori2Blocks, hitori2Rating);
       setupPuzzle();
       break;
@@ -125,11 +125,11 @@ function setupPuzzle() {
 
       cell.addEventListener('mouseover', (e) => {
          if (e.shiftKey) {
-            cell.style.cursor = 'url(../img/jpf_eraser.png), alias';
+            cell.style.cursor = 'url(./img/jpf_eraser.png), alias';
          } else if (e.altKey) {
-            cell.style.cursor = 'url(../img/jpf_block.png), cell';
+            cell.style.cursor = 'url(./img/jpf_block.png), cell';
          } else {
-            cell.style.cursor = 'url(../img/jpf_circle.png), pointer';
+            cell.style.cursor = 'url(./img/jpf_circle.png), pointer';
          }
       })
 
